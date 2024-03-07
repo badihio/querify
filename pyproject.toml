@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "querify"
+version = "0.1.0"
+description = "Querify your day to day data"
+authors = ["Ohad Badihi <badihio@yahoo.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+sql-metadata = "^2.10.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
