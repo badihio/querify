@@ -21,7 +21,7 @@ class BaseApp(
     @abc.abstractmethod
     def get_sources(
         self,
-    ):
+    ) -> list[Source]:
         ...
 
     @abc.abstractmethod

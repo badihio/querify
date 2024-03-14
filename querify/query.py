@@ -30,8 +30,9 @@ def query():
 
     app = apps.all_apps.get(args.app)
 
-    print(parsed_query)
-    print(app.name)
+    print(app.get_source_data(
+        source_name='files',
+    ))
 
 
 if __name__ == '__main__':

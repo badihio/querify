@@ -1,6 +1,7 @@
 import datetime
 
 from . import base_app
+from . import clients
 
 
 class FileModel(
@@ -18,9 +19,16 @@ class App(
 ):
     name = 'storage'
 
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()
+
+        self.storage_client = clients.storage.Client()
+
     def get_sources(
         self,
-    ):
+    ) -> list[base_app.Source]:
         return [
             base_app.Source(
                 name='files',
@@ -28,5 +36,19 @@ class App(
             ),
         ]
 
-    def get_source_data(self, source_name: str) -> list:
-        return super().get_source_data(source_name)
+    def get_source_data(
+        self,
+        source_name: str,
+    ) -> list | None:
+        if source_name == 'files':
+            return [
+                FileModel(
+                    name=file.name,
+                    size_in_bytes=file.size_in_bytes,
+                    owner=file.owner,
+                    update_date=file.update_date,
+                    access_date=file.access_date,
+                )
+                for file in self.storage_client.get_files()
+            ]
+
