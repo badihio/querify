@@ -1,34 +1,37 @@
-import sys
+import argparse
 import sql_metadata
 
-import sources
+import apps
 
 
 def query():
-    try:
-        query = sys.argv[1]
-    except IndexError:
-        raise Exception(
-            'Missing query',
-        )
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-a',
+        '--app',
+        help='App name',
+        required=True,
+        type=str,
+        choices=list(apps.all_apps.keys()),
 
-    parsed_query = sql_metadata.Parser(query)
+    )
 
-    try:
-        source_name, table_name = parsed_query.tables[0].split('.')
-    except Exception:
-        raise ValueError(
-            'From has to contain database name and table name',
-        )
+    parser.add_argument(
+        '-q',
+        '--query',
+        help='Query to run',
+        required=True,
+        type=str,
+    )
 
-    source = sources.all_sources.get(source_name)
+    args = parser.parse_args()
 
-    if not source:
-        raise ValueError(
-            f'{source_name} is not supported'
-        )
+    parsed_query = sql_metadata.Parser(args.query)
 
-    print(source.name)
+    app = apps.all_apps.get(args.app)
+
+    print(parsed_query)
+    print(app.name)
 
 
 if __name__ == '__main__':
