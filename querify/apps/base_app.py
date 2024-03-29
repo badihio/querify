@@ -1,18 +1,6 @@
 import abc
-import pydantic
 
-
-class Model(
-    pydantic.BaseModel,
-):
-    ...
-
-
-class Source(
-    pydantic.BaseModel,
-):
-    name: str
-    model: Model
+from . import models
 
 
 class BaseApp(
@@ -21,12 +9,12 @@ class BaseApp(
     @abc.abstractmethod
     def get_sources(
         self,
-    ) -> list[Source]:
+    ) -> list[models.Source]:
         ...
 
     @abc.abstractmethod
     def get_source_data(
         self,
         source_name: str
-    ) -> list[Model]:
+    ) -> list[models.Model]:
         ...
