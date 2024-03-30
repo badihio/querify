@@ -21,23 +21,21 @@ class DB:
         if self.conn is not None:
             self.conn.close()
 
-    def create_sources_tables(
+    def create_source_table(
         self,
-        sources: list[apps.models.Source],
+        source: apps.BaseSource,
     ):
-        for source in sources:
-            fields = [
-                field
-                for field, _ in source.model.__fields__.items()
-            ]
-            fields_clause = ', '.join(fields)
+        fields = [
+            field
+            for field, _ in source.model.__fields__.items()
+        ]
+        fields_clause = ', '.join(fields)
 
-            self.conn.execute(f'CREATE TABLE {source.name}({fields_clause})')
+        self.conn.execute(f'CREATE TABLE {source.name}({fields_clause})')
 
     def insert_source_data(
         self,
-        source: apps.models.Source,
-        source_data: list[apps.models.Model],
+        source: apps.BaseSource,
     ):
         fields = [
             field
@@ -52,7 +50,7 @@ class DB:
                 getattr(source_item, field)
                 for field in fields
             )
-            for source_item in source_data
+            for source_item in source.get_data()
         ]
 
         self.conn.executemany(
@@ -66,4 +64,12 @@ class DB:
     ):
         result = self.conn.execute(query)
 
-        return result.fetchall()
+        columns = [
+            description[0]
+            for description in result.description
+        ]
+
+        return (
+            columns,
+            result.fetchall(),
+        )

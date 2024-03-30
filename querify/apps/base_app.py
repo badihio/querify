@@ -3,18 +3,39 @@ import abc
 from . import models
 
 
+class BaseSource(
+    abc.ABC,
+):
+    name: str
+
+    @property
+    def model(
+        self,
+    ) -> models.Model:
+        ...
+
+    @abc.abstractclassmethod
+    def get_data(
+        self,
+    ) -> list[models.Model]:
+        ...
+
+
 class BaseApp(
     abc.ABC,
 ):
-    @abc.abstractmethod
-    def get_sources(
+    def get_source_by_name(
         self,
-    ) -> list[models.Source]:
-        ...
+        source_name: str,
+    ):
+        for source in self.sources:
+            if source.name == source_name:
+                return source
 
-    @abc.abstractmethod
-    def get_source_data(
+        raise ValueError('Source not found')
+
+    @property
+    def sources(
         self,
-        source_name: str
-    ) -> list[models.Model]:
+    ) -> list[BaseSource]:
         ...

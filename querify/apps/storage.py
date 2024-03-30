@@ -15,17 +15,10 @@ class FileModel(
     access_date: datetime.datetime
 
 
-class App(
-    base_app.BaseApp,
+class FileSource(
+    base_app.BaseSource,
 ):
-    name = 'storage'
-
-    sources = [
-        models.Source(
-            name='files',
-            model=FileModel,
-        ),
-    ]
+    name = 'files'
 
     def __init__(
         self,
@@ -34,35 +27,36 @@ class App(
 
         self.storage_client = clients.storage.Client()
 
-    def get_sources(
+    @property
+    def model(
         self,
-    ) -> list[models.Source]:
-        return self.sources
-
-    def get_source_by_name(
-        self,
-        source_name: str,
     ):
-        for source in self.sources:
-            if source.name == source_name:
-                return source
+        return FileModel
 
-        raise ValueError('Source not found')
-
-    def get_source_data(
+    def get_data(
         self,
-        source_name: str,
-    ) -> list:
-        if source_name == 'files':
-            return [
-                FileModel(
-                    name=file.name,
-                    size_in_bytes=file.size_in_bytes,
-                    owner=file.owner,
-                    update_date=file.update_date,
-                    access_date=file.access_date,
-                )
-                for file in self.storage_client.get_files()
-            ]
+    ):
+        return [
+            FileModel(
+                name=file.name,
+                size_in_bytes=file.size_in_bytes,
+                owner=file.owner,
+                update_date=file.update_date,
+                access_date=file.access_date,
+            )
+            for file in self.storage_client.get_files()
+        ]
 
-        raise ValueError('Source not found')
+
+class App(
+    base_app.BaseApp,
+):
+    name = 'storage'
+
+    @property
+    def sources(
+        self,
+    ) -> list:
+        return [
+            FileSource(),
+        ]

@@ -1,5 +1,5 @@
 from . import storage
-from . import models
+from .base_app import BaseSource
 
 
 all_apps = {

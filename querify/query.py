@@ -1,5 +1,8 @@
 import argparse
+import colorama
 import sql_metadata
+import tabulate
+import typing
 
 import apps
 import database
@@ -31,26 +34,46 @@ def query():
 
     app = apps.all_apps[args.app]
 
+    source = app.get_source_by_name(
+        parsed_query.tables[0]
+    )
+
     with database.client.DB() as db:
-        db.create_sources_tables(
-            sources=app.get_sources(),
+        db.create_source_table(
+            source=source,
         )
 
         db.insert_source_data(
-            source=app.get_source_by_name(
-                source_name='files',
-            ),
-            source_data=app.get_source_data(
-                source_name='files',
-            ),
+            source=source,
         )
 
-        result = db.query(
-            query='SELECT * FROM files WHERE name LIKE "%python%"',
+        columns, rows = db.query(
+            query=parsed_query.query,
         )
 
-        import pprint
-        pprint.pprint(result)
+        display(
+            columns=columns,
+            rows=rows,
+        )
+
+
+def display(
+    columns: list[str],
+    rows: list[typing.Any],
+):
+    print(
+        tabulate.tabulate(
+            rows,
+            [
+                colorama.Style.BRIGHT +
+                f'{column}' +
+                colorama.Style.RESET_ALL
+                for column
+                in columns
+            ],
+            tablefmt='psql',
+        )
+    )
 
 
 if __name__ == '__main__':
