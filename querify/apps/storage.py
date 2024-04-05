@@ -2,17 +2,6 @@ import datetime
 
 from . import base_app
 from . import clients
-from . import models
-
-
-class FileModel(
-    models.Model,
-):
-    name: str
-    size_in_bytes: int
-    owner: str
-    update_date: datetime.datetime
-    access_date: datetime.datetime
 
 
 class FileSource(
@@ -31,21 +20,36 @@ class FileSource(
     def model(
         self,
     ):
-        return FileModel
+        return clients.storage.File
 
     def get_data(
         self,
     ):
-        return [
-            FileModel(
-                name=file.name,
-                size_in_bytes=file.size_in_bytes,
-                owner=file.owner,
-                update_date=file.update_date,
-                access_date=file.access_date,
-            )
-            for file in self.storage_client.get_files()
-        ]
+        return list(self.storage_client.get_files())
+
+
+class DirSource(
+    base_app.BaseSource,
+):
+    name = 'dirs'
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()
+
+        self.storage_client = clients.storage.Client()
+
+    @property
+    def model(
+        self,
+    ):
+        return clients.storage.Dir
+
+    def get_data(
+        self,
+    ):
+        return list(self.storage_client.get_dirs())
 
 
 class App(
@@ -59,4 +63,5 @@ class App(
     ) -> list:
         return [
             FileSource(),
+            DirSource(),
         ]
