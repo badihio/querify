@@ -8,6 +8,12 @@ class BaseSource(
 ):
     name: str
 
+    def __init__(
+        self,
+        filters: dict,
+    ) -> None:
+        self.filters = filters
+
     @property
     def model(
         self,

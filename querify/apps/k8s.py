@@ -2,10 +2,10 @@ from . import base_app
 from . import clients
 
 
-class FileSource(
+class PodSource(
     base_app.BaseSource,
 ):
-    name = 'files'
+    name = 'pods'
 
     def __init__(
         self,
@@ -13,24 +13,24 @@ class FileSource(
     ) -> None:
         super().__init__(**kwargs)
 
-        self.storage_client = clients.storage.Client()
+        self.k8s_client = clients.k8s.Client()
 
     @property
     def model(
         self,
     ):
-        return clients.storage.File
+        return clients.k8s.Pod
 
     def get_data(
         self,
     ):
-        return list(self.storage_client.get_files())
+        return list(self.k8s_client.get_pods())
 
 
-class DirSource(
+class NamespaceSource(
     base_app.BaseSource,
 ):
-    name = 'dirs'
+    name = 'namespaces'
 
     def __init__(
         self,
@@ -38,30 +38,30 @@ class DirSource(
     ) -> None:
         super().__init__(**kwargs)
 
-        self.storage_client = clients.storage.Client()
+        self.k8s_client = clients.k8s.Client()
 
     @property
     def model(
         self,
     ):
-        return clients.storage.Dir
+        return clients.k8s.Namespace
 
     def get_data(
         self,
     ):
-        return list(self.storage_client.get_dirs())
+        return list(self.k8s_client.get_namespaces())
 
 
 class App(
     base_app.BaseApp,
 ):
-    name = 'storage'
+    name = 'k8s'
 
     @property
     def sources(
         self,
     ) -> list:
         return [
-            FileSource,
-            DirSource,
+            PodSource,
+            NamespaceSource,
         ]

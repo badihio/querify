@@ -1,6 +1,6 @@
 import argparse
 import colorama
-import sql_metadata
+import mo_sql_parsing
 import tabulate
 import typing
 
@@ -30,12 +30,18 @@ def query():
 
     args = parser.parse_args()
 
-    parsed_query = sql_metadata.Parser(args.query)
+    parsed_query = mo_sql_parsing.parse(args.query)
+
+    print(parsed_query)
 
     app = apps.all_apps[args.app]
 
-    source = app.get_source_by_name(
-        parsed_query.tables[0]
+    source_cls = app.get_source_by_name(
+        source_name=parsed_query['from'],
+    )
+
+    source = source_cls(
+        filters=parsed_query.get('where', {}),
     )
 
     with database.client.DB() as db:
@@ -48,7 +54,7 @@ def query():
         )
 
         columns, rows = db.query(
-            query=parsed_query.query,
+            query=args.query,
         )
 
         display(
