@@ -1,6 +1,6 @@
 import sqlite3
 
-import apps
+import sources
 
 
 class DB:
@@ -23,7 +23,7 @@ class DB:
 
     def create_source_table(
         self,
-        source: apps.BaseSource,
+        source: sources.base_source.BaseSource,
     ):
         fields = [
             field
@@ -35,7 +35,7 @@ class DB:
 
     def insert_source_data(
         self,
-        source: apps.BaseSource,
+        source: sources.base_source.BaseSource,
     ):
         fields = [
             field

@@ -1,9 +1,9 @@
-from . import base_app
+from . import base_source
 from . import clients
 
 
 class ProcessSource(
-    base_app.BaseSource,
+    base_source.BaseSource,
 ):
     name = 'processes'
 
@@ -27,15 +27,3 @@ class ProcessSource(
         return list(self.process_client.get_processes())
 
 
-class App(
-    base_app.BaseApp,
-):
-    name = 'process'
-
-    @property
-    def sources(
-        self,
-    ) -> list:
-        return [
-            ProcessSource,
-        ]

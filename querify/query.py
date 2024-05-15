@@ -1,47 +1,24 @@
-import argparse
 import colorama
 import mo_sql_parsing
 import tabulate
 import typing
+import sys
 
-import apps
 import database
+import sources
 
 
-def query():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-a',
-        '--app',
-        help='App name',
-        required=True,
-        type=str,
-        choices=list(apps.all_apps.keys()),
+def query(
+    query=None,
+    *_,
+):
+    if query is None:
+        raise Exception('Missing query')
 
-    )
+    parsed_query = mo_sql_parsing.parse(query)
 
-    parser.add_argument(
-        '-q',
-        '--query',
-        help='Query to run',
-        required=True,
-        type=str,
-    )
-
-    args = parser.parse_args()
-
-    parsed_query = mo_sql_parsing.parse(args.query)
-
-    print(parsed_query)
-
-    app = apps.all_apps[args.app]
-
-    source_cls = app.get_source_by_name(
+    source = sources.get_source_by_name(
         source_name=parsed_query['from'],
-    )
-
-    source = source_cls(
-        filters=parsed_query.get('where', {}),
     )
 
     with database.client.DB() as db:
@@ -54,7 +31,7 @@ def query():
         )
 
         columns, rows = db.query(
-            query=args.query,
+            query=query,
         )
 
         display(
@@ -83,4 +60,4 @@ def display(
 
 
 if __name__ == '__main__':
-    query()
+    query(*sys.argv[1:])
