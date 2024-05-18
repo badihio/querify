@@ -1,13 +1,16 @@
 [tool.poetry]
-name = "querify"
-version = "0.2.0"
+name = "sql-querify"
+version = "0.1.0"
 description = "An SQL interface for your everyday data"
-authors = ["Ohad Badihi <badihio@yahoo.com>"]
+authors = ["Ohad Badihi <badihio@gmail.com>"]
 readme = "README.md"
 license = "MIT"
 homepage = "https://github.com/badihio/querify"
 repository = "https://github.com/badihio/querify"
 keywords = ["cli", "sql", "query"]
+packages = [
+    { include = "querify" },
+]
 
 [tool.poetry.scripts]
 qy = "querify.query:main"
@@ -23,8 +26,3 @@ sql-metadata = "^2.11.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[[tool.poetry.source]]
-name = "pypitest"
-url = "https://test.pypi.org/legacy/"
-default = false
