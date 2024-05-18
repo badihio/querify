@@ -1,6 +1,6 @@
 import sqlite3
 
-import sources
+from .. import sources
 
 
 class DB:

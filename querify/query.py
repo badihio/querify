@@ -1,11 +1,11 @@
 import colorama
-import mo_sql_parsing
 import tabulate
 import typing
 import sys
+import sql_metadata
 
-import database
-import sources
+from . import database
+from . import sources
 
 
 def query(
@@ -15,10 +15,10 @@ def query(
     if query is None:
         raise Exception('Missing query')
 
-    parsed_query = mo_sql_parsing.parse(query)
+    parsed_query = sql_metadata.Parser(query)
 
     source = sources.get_source_by_name(
-        source_name=parsed_query['from'],
+        source_name=parsed_query.tables[0],
     )
 
     with database.client.DB() as db:
@@ -59,5 +59,9 @@ def display(
     )
 
 
-if __name__ == '__main__':
+def main():
     query(*sys.argv[1:])
+
+
+if __name__ == '__main__':
+    main()

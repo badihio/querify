@@ -23,90 +23,6 @@ files = [
 ]
 
 [[package]]
-name = "mo-dots"
-version = "9.578.24081"
-description = "More Dots! Dot-access to Python dicts like Javascript"
-optional = false
-python-versions = "*"
-files = [
-    {file = "mo-dots-9.578.24081.tar.gz", hash = "sha256:d72b7063f810a65bc94986e0391fb6fcf24a9e197b4d11b7d423f2cf90215186"},
-    {file = "mo_dots-9.578.24081-py3-none-any.whl", hash = "sha256:84f3f02f3ef7d18299015652814fa371e95c9ec79a96949a7aeae04c21a4a161"},
-]
-
-[package.dependencies]
-mo-future = "7.546.24057"
-mo-imports = "7.546.24057"
-
-[package.extras]
-tests = ["jx-elasticsearch (>=3.99.20292)", "mo-json (>=6.562.24075)", "mo-logs (>=8.562.24075)", "mo-math (>=7.562.24075)", "mo-testing (>=7.562.24075)", "mo-threads (>=6.562.24075)", "mo-times (>=5.562.24075)", "pyLibrary (>=3.264.22338)"]
-
-[[package]]
-name = "mo-future"
-version = "7.546.24057"
-description = "More future! Make Python 2/3 compatibility a bit easier"
-optional = false
-python-versions = "*"
-files = [
-    {file = "mo-future-7.546.24057.tar.gz", hash = "sha256:0b23324c36c00020e21aad73a81297eb09d0e9d1c453a7f502ac48aef04281b1"},
-    {file = "mo_future-7.546.24057-py3-none-any.whl", hash = "sha256:54231a48e0a95a9312739abd44635ccead591cc9d5330631cc111fa090637a3c"},
-]
-
-[[package]]
-name = "mo-imports"
-version = "7.546.24057"
-description = "More Imports! - Delayed importing"
-optional = false
-python-versions = "*"
-files = [
-    {file = "mo-imports-7.546.24057.tar.gz", hash = "sha256:68c2f8c959f4800b04784883e77fb9ea09fa130b98b9696a97a0dd63fa46bd68"},
-    {file = "mo_imports-7.546.24057-py3-none-any.whl", hash = "sha256:a397cca8eb64d8e3ca39a38116d6050a83eb673950813b7bdba94b8dbe41e509"},
-]
-
-[package.dependencies]
-mo-future = "7.546.24057"
-
-[package.extras]
-tests = ["mo-logs (>=8.538.24037)"]
-
-[[package]]
-name = "mo-parsing"
-version = "8.581.24094"
-description = "Another PEG Parsing Tool"
-optional = false
-python-versions = "*"
-files = [
-    {file = "mo-parsing-8.581.24094.tar.gz", hash = "sha256:388031e63611854d78818daa96b60c7c83ecbec2bf4e13f6f442f26c78c42702"},
-    {file = "mo_parsing-8.581.24094-py3-none-any.whl", hash = "sha256:65e460e33b282a6e20d8aec23e602ec550ebf58bc6a3c502ac6a82c8d89d154e"},
-]
-
-[package.dependencies]
-mo-dots = "9.578.24081"
-mo-future = "7.546.24057"
-
-[package.extras]
-tests = ["mo-files (>=6.562.24075)", "mo-logs (>=8.562.24075)", "mo-testing (>=7.562.24075)", "mo-threads (>=6.562.24075)"]
-
-[[package]]
-name = "mo-sql-parsing"
-version = "10.581.24094"
-description = "More SQL Parsing! Parse SQL into JSON parse tree"
-optional = false
-python-versions = "*"
-files = [
-    {file = "mo-sql-parsing-10.581.24094.tar.gz", hash = "sha256:391c639cf009cb25998699fdbcebadc796b750ec313db99cc38ae4d5e7009fd9"},
-    {file = "mo_sql_parsing-10.581.24094-py3-none-any.whl", hash = "sha256:0a7e4353641aaaf1b88159981cfae3791d8ba94082b047661cbd35ed38d5672f"},
-]
-
-[package.dependencies]
-mo-dots = "9.578.24081"
-mo-future = "7.546.24057"
-mo-imports = "7.546.24057"
-mo-parsing = "8.581.24094"
-
-[package.extras]
-tests = ["mo-files", "mo-streams", "mo-testing", "mo-threads", "zstandard"]
-
-[[package]]
 name = "psutil"
 version = "5.9.8"
 description = "Cross-platform lib for process and system monitoring in Python."
@@ -245,6 +161,35 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "sql-metadata"
+version = "2.11.0"
+description = "Uses tokenized query returned by python-sqlparse and generates query metadata"
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "sql_metadata-2.11.0-py3-none-any.whl", hash = "sha256:2ce9d4519565a972edf786712d3f6fbebf8ddd8e0d7bdb4bf51d64f5ec2e5c88"},
+    {file = "sql_metadata-2.11.0.tar.gz", hash = "sha256:f23b708ce558221f2ca3760eb4ab856b4f80540b5cf51733ad97913bc546862b"},
+]
+
+[package.dependencies]
+sqlparse = ">=0.4.1,<0.6.0"
+
+[[package]]
+name = "sqlparse"
+version = "0.5.0"
+description = "A non-validating SQL parser."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "sqlparse-0.5.0-py3-none-any.whl", hash = "sha256:c204494cd97479d0e39f28c93d46c0b2d5959c7b9ab904762ea6c7af211c8663"},
+    {file = "sqlparse-0.5.0.tar.gz", hash = "sha256:714d0a4932c059d16189f58ef5411ec2287a4360f17cdd0edd2d09d4c5087c93"},
+]
+
+[package.extras]
+dev = ["build", "hatch"]
+doc = ["sphinx"]
+
+[[package]]
 name = "tabulate"
 version = "0.9.0"
 description = "Pretty-print tabular data"
@@ -272,4 +217,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "43b50263a7a4127f9623eef350efc571f10a3e28f740cb86f50aa11631beffce"
+content-hash = "d13cbb0989e7fbc4582e7bebd9f0fa1c7009adb62cb8c48c0d1bf9705b99f59e"
