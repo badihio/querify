@@ -1,6 +1,18 @@
+import datetime
 import sqlite3
 
 from .. import sources
+
+
+def attr_getter(
+    obj: object,
+    key: str,
+):
+    value = getattr(obj, key)
+    if isinstance(value, datetime.datetime):
+        return value.strftime('%Y-%m-%d %H:%M:%S')
+
+    return value
 
 
 class DB:
@@ -47,7 +59,10 @@ class DB:
 
         source_values = [
             tuple(
-                getattr(source_item, field)
+                attr_getter(
+                    obj=source_item,
+                    key=field,
+                )
                 for field in fields
             )
             for source_item in source.get_data()
