@@ -9,6 +9,7 @@ from . import exceptions
 from . import sources
 
 
+
 def query(
     query=None,
     *_,
@@ -19,7 +20,7 @@ def query(
     query = query.lower()
 
     try:
-        if query.replace(' ', '') == 'show tables'.replace(' ', ''):
+        if trimed(query) == trimed('show tables'):
             return display(
                 columns=[
                     'table_name',
@@ -115,6 +116,12 @@ def display(
             tablefmt='psql',
         )
     )
+
+
+def trimed(
+    x: str,
+) -> str:
+    return x.replace(' ', '')
 
 
 def main():
