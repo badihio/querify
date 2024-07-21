@@ -9,10 +9,8 @@ from . import exceptions
 from . import sources
 
 
-
 def query(
     query=None,
-    *_,
 ):
     if query is None:
         raise exceptions.ValidationError('Missing query')
@@ -26,8 +24,10 @@ def query(
                     'table_name',
                 ],
                 rows=[
-                    (source_name,)
-                    for source_name in sources.sources.keys()
+                    (
+                        source_name,
+                    )
+                    for source_name in sources.sources
                 ],
             )
 
@@ -75,8 +75,11 @@ def is_describe_table_query(
         describe, _ = query.split(' ')
 
         return any(
-            describe==valid_describe
-            for valid_describe in ('desc', 'describe')
+            describe == valid_describe
+            for valid_describe in (
+                'desc',
+                'describe',
+            )
         )
 
     return False
@@ -86,7 +89,10 @@ def describe_source(
     source: sources.base_source.BaseSource,
 ):
     source_fields = [
-        (field, field_type.__name__)
+        (
+            field,
+            field_type.__name__,
+        )
         for field, field_type in typing.get_type_hints(source.model).items()
     ]
 

@@ -1,5 +1,3 @@
-
-
 class QuerifyError(
     Exception,
 ):
